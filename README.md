@@ -1,1 +1,1 @@
-# TarantellaBot
+# tarantella-crawler
