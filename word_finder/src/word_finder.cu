@@ -18,8 +18,10 @@
 // includes header(Word Finder CUDA module)
 #include "word_finder.cuh"
 
-int finder(int argc, char **argv){
+int finder(){
 
-	printf("OK\n");
 	return 0;
 }
+
+
+

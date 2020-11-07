@@ -9,12 +9,7 @@
 #ifndef WORD_FINDER_CUH
 #define WORD_FINDER_CUH
 
-
-//!
-int finder(int argc, char **argv);
-
-
-
-
+//! module word_finder main function
+int finder();
 
 #endif
