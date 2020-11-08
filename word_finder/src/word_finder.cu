@@ -3,7 +3,7 @@
 // Author          : Marcin Grzegorz Kaspryk
 // Version         : 1.0.0
 // Copyright       : ASL
-// Description     : Word Finder CUDA module
+// Description     : CUDA module - Word Finder
 //=======================================================================
 
 // includes, system
@@ -18,9 +18,9 @@
 // includes header(Word Finder CUDA module)
 #include "word_finder.cuh"
 
-int finder(){
+void finder(int *flag,char **dic_words,char **web_words,int long_dic,int long_web){
 
-	return 0;
+	return;
 }
 
 
