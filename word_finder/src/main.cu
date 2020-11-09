@@ -29,7 +29,7 @@ void readingFiles(int argc, char**argv, int *flag,char **dic_words,char **web_wo
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
-	int flag;
+	int flag=0;
 	if(argc<4){
 		flag=NOT_ENOUGH_PARAMETERS;
 		return flag;
@@ -37,8 +37,10 @@ int main(int argc, char **argv)
 	// uses only by strtol
 	char *p;
 	int i,j;
-	long long_dic = strtol(argv[1], &p, 10);
-	long long_web = strtol(argv[2], &p, 10);
+	// sets the GPU
+	int set_device = strtol(argv[1], &p, 10);
+	int long_dic = strtol(argv[2], &p, 10);
+	int long_web = strtol(argv[3], &p, 10);
 
 	char **dic_words = (char**)malloc(long_dic*sizeof(char *));
 	char **web_words = (char**)malloc(long_web*sizeof(char *));
@@ -57,10 +59,14 @@ int main(int argc, char **argv)
 
 	//================================
 	// data to collect
-	int count;
+	int *count;
+	count = (int*)malloc(long_dic * sizeof(int));
+	for(i=0;i<long_dic;++i){
+		count[i] = 0;
+	}
 	//================================
 
-	finder(&flag,dic_words,web_words,long_dic,long_web);
+	finder(&set_device,&flag,count,dic_words,web_words,long_dic,long_web,LONGEST_WORD);
 
 	for(i=0;i<long_dic;++i){
 

@@ -18,7 +18,26 @@
 // includes header(Word Finder CUDA module)
 #include "word_finder.cuh"
 
-void finder(int *flag,char **dic_words,char **web_words,int long_dic,int long_web){
+void finder(int *set_device, int *flag, int *count, char **dic_words, char **web_words, int long_dic, int long_web, int LONGEST_WORD){
+
+	char **dic_words_d,**web_words_d;
+
+	cudaMalloc((void**)&dic_words_d,long_dic*LONGEST_WORD*sizeof(char));
+	cudaMalloc((void**)&web_words_d,long_web*LONGEST_WORD*sizeof(char));
+
+	//cudaMemcpy();
+
+	//cudaMemcpy();
+
+//	int i;
+//	for(i=0;i<long_dic;++i){
+//		//dic_words_d[i] = (char*)malloc(LONGEST_WORD * sizeof(char));
+//	}
+//
+//	for(i=0;i<long_web;++i){
+//		//web_words_d[i] = (char*)malloc(LONGEST_WORD * sizeof(char));
+//	}
+
 
 	return;
 }

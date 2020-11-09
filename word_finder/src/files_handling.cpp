@@ -15,16 +15,15 @@
 // includes header(files_handling)
 #include "files_handling.hpp"
 
-#define LOADED_CORRECTLY 0
 #define DICTIONARY_FILE_NOT_FOUND -2
 #define WEB_CONTENT_FILE_NOT_FOUND -3
 
 void readingFiles(int argc, char**argv, int *flag, char **dic_words, char **web_words){
 
-	std::string dictionary_file = argv[3];
+	std::string dictionary_file = argv[4];
 	std::cout<<"dictionary_file: "<<dictionary_file<<std::endl;
 
-	std::string web_content_file = argv[4];
+	std::string web_content_file = argv[5];
 	std::cout<<"web_content_file: "<<web_content_file<<std::endl;
 
 	std::fstream dic_file;
@@ -34,12 +33,10 @@ void readingFiles(int argc, char**argv, int *flag, char **dic_words, char **web_
 	web_file.open(web_content_file,std::ios::in);
 
 	if(!dic_file.is_open()){
-
 		*flag = DICTIONARY_FILE_NOT_FOUND;
 		return;
 	}
 	if(!web_file.is_open()){
-
 		*flag=WEB_CONTENT_FILE_NOT_FOUND;
 		return;
 	}
@@ -59,7 +56,6 @@ void readingFiles(int argc, char**argv, int *flag, char **dic_words, char **web_
 	dic_file.close();
 	web_file.close();
 
-	*flag=LOADED_CORRECTLY;
 	return;
 }
 
