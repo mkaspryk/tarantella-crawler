@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <cuda_runtime.h>
 
-//! Caching CUDA errors
+//! caching CUDA errors
 static void tryError(cudaError_t err, const char* file, int line) {
 
 	if (err != cudaSuccess) {

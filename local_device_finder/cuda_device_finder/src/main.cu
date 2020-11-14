@@ -17,6 +17,7 @@
 
 #define CUDA_DEVICE_NOT_FOUND -1
 
+//! returns device with the best compute capability
 int set_device(){
 
 	cudaDeviceProp prop;
@@ -52,9 +53,7 @@ int set_device(){
 	return set;
 }
 
-
 int main(int argc, char **argv)
 {
 	return set_device();
 }
-
