@@ -49,7 +49,7 @@ int set_device(){
 	    	set=i;
 	    }
 	}
-	printf("Setted device: %d",set);
+	printf("Setted device: %d\n",set);
 	return set;
 }
 
