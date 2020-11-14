@@ -11,11 +11,17 @@
 #include <stdlib.h>
 #include <cstring>
 
+// includes CUDA
+#include <cuda_runtime.h>
+
 // includes header(Word Finder CUDA module)
 #include "word_finder.cuh"
 
 // includes header(files_handling)
 #include "files_handling.hpp"
+
+// includes header(CUDA errors catcher)
+#include "cuda_error.hpp"
 
 // export C interface
 extern "C"
@@ -34,6 +40,9 @@ int main(int argc, char **argv)
 		flag=NOT_ENOUGH_PARAMETERS;
 		return flag;
 	}
+
+	TRY(cudaSetDevice(0));
+
 	// uses only by strtol
 	char *p;
 	int i,j;
@@ -45,8 +54,15 @@ int main(int argc, char **argv)
 	char **dic_words = (char**)malloc(long_dic*sizeof(char *));
 	char **web_words = (char**)malloc(long_web*sizeof(char *));
 
+	//================================
+	// data to collect
+	int *count;
+	count = (int*)malloc(long_dic * sizeof(int));
+	//================================
+
 	for(i=0;i<long_dic;++i){
 		dic_words[i] = (char*)malloc(LONGEST_WORD * sizeof(char));
+		count[i] = 0;
 	}
 
 	for(i=0;i<long_web;++i){
@@ -56,15 +72,6 @@ int main(int argc, char **argv)
 	readingFiles(argc,argv,&flag,dic_words,web_words);
 
 	if(flag!=0){return flag;}
-
-	//================================
-	// data to collect
-	int *count;
-	count = (int*)malloc(long_dic * sizeof(int));
-	for(i=0;i<long_dic;++i){
-		count[i] = 0;
-	}
-	//================================
 
 	finder(&set_device,&flag,count,dic_words,web_words,long_dic,long_web,LONGEST_WORD);
 

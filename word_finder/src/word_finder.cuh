@@ -6,10 +6,13 @@
 // Description     : CUDA module - Word Finder
 //=======================================================================
 
-#ifndef WORD_FINDER_CUH
-#define WORD_FINDER_CUH
+#ifndef __WORD_FINDER_CUH__
+#define __WORD_FINDER_CUH__
+
+//! finder kernel
+__global__ void finderKernel(int *count, char *dic_words, char *web_words,int long_dic, int long_web);
 
 //! module word_finder main function
 void finder(int *set_device, int *flag, int *count, char **dic_words, char **web_words, int long_dic, int long_web, int LONGEST_WORD);
 
-#endif
+#endif //! __WORD_FINDER_CUH__

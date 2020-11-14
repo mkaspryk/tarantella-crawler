@@ -18,29 +18,45 @@
 // includes header(Word Finder CUDA module)
 #include "word_finder.cuh"
 
+// includes header(CUDA errors catcher)
+#include "cuda_error.hpp"
+
+__global__ void finderKernel(int *count, char *dic_words, char *web_words,int long_dic, int long_web){
+
+	int tid = blockIdx.x;
+	if(tid<long_dic){
+		count[tid]++;
+	}
+}
+
 void finder(int *set_device, int *flag, int *count, char **dic_words, char **web_words, int long_dic, int long_web, int LONGEST_WORD){
 
-	char **dic_words_d,**web_words_d;
+	char *dic_words_d=0,*web_words_d=0;
+	int *count_d;
 
-	cudaMalloc((void**)&dic_words_d,long_dic*LONGEST_WORD*sizeof(char));
-	cudaMalloc((void**)&web_words_d,long_web*LONGEST_WORD*sizeof(char));
+	TRY(cudaMalloc((void**)&dic_words_d,long_dic*LONGEST_WORD*sizeof(char)));
+	TRY(cudaMalloc((void**)&web_words_d,long_web*LONGEST_WORD*sizeof(char)));
+	TRY(cudaMalloc((void**)&count_d,long_dic*LONGEST_WORD*sizeof(int)));
 
-	//cudaMemcpy();
+	TRY(cudaMemcpy(dic_words_d,dic_words,long_dic*LONGEST_WORD*sizeof(char),cudaMemcpyHostToDevice));
+	TRY(cudaMemcpy(web_words_d,web_words,long_web*LONGEST_WORD*sizeof(char),cudaMemcpyHostToDevice));
+	TRY(cudaMemcpy(count_d,count,long_dic*LONGEST_WORD*sizeof(int),cudaMemcpyHostToDevice));
 
-	//cudaMemcpy();
+	dim3  grid(1, 1, 1);
+	dim3  threads(32, 1, 1);
 
-//	int i;
-//	for(i=0;i<long_dic;++i){
-//		//dic_words_d[i] = (char*)malloc(LONGEST_WORD * sizeof(char));
-//	}
-//
-//	for(i=0;i<long_web;++i){
-//		//web_words_d[i] = (char*)malloc(LONGEST_WORD * sizeof(char));
-//	}
+	finderKernel<<< grid,threads >>>(count_d, dic_words_d, web_words_d, long_dic, long_web);
 
+	TRY(cudaDeviceSynchronize());
+
+	TRY(cudaMemcpy(count,count_d,long_dic*LONGEST_WORD*sizeof(int),cudaMemcpyDeviceToHost));
+
+	// frees the device memory
+    cudaFree(dic_words_d);
+    cudaFree(web_words_d);
+    cudaFree(count_d);
+
+	cudaDeviceReset();
 
 	return;
 }
-
-
-

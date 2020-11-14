@@ -6,8 +6,8 @@
 // Description     : Handling files
 //=======================================================================
 
-#ifndef FILES_HANDLING_HPP
-#define FILES_HANDLING_HPP
+#ifndef __FILES_HANDLING_HPP__
+#define __FILES_HANDLING_HPP__
 
 // export C interface
 extern "C"
@@ -16,4 +16,4 @@ void readingFiles(int argc, char**argv, int *flag, char **dic_words, char **web_
 //! reads files content
 void readingFiles(int argc, char**argv, int *flag, char **dic_words, char **web_words);
 
-#endif
+#endif //! __FILES_HANDLING_HPP__
