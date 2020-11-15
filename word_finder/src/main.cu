@@ -85,6 +85,11 @@ int main(int argc, char **argv)
 		printf("%s\n",web_words[i]);
 	}
 
+	for(i=0;i<long_dic;++i){
+
+		printf("%d: %d\n",i,count[i]);
+	}
+
 	// frees the memory
 	for (i = 0; i < long_dic; ++i) {
 		free(dic_words[i]);
@@ -92,6 +97,7 @@ int main(int argc, char **argv)
 	for (i = 0; i < long_web; ++i) {
 		free(web_words[i]);
 	}
+	free(count);
 
 	printf("flag = %d\n",flag);
 
