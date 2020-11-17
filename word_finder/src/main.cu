@@ -17,15 +17,22 @@
 // includes header(Word Finder CUDA module)
 #include "word_finder.cuh"
 
+// includes header(Word Finder CPU module)
+#include "cpu_word_finder.hpp"
+
 // includes header(files_handling)
 #include "files_handling.hpp"
 
 // includes header(CUDA errors catcher)
 #include "cuda_error.hpp"
 
-// export C interface
+// export C interface (reads content from files)
 extern "C"
 void readingFiles(int argc, char**argv, int *flag,char **dic_words,char **web_words);
+
+// export C interface (CPU word finder)
+extern "C"
+void cpu_finder(int *count, char **dic_words, char **web_words, int long_dic, int long_web);
 
 #define LONGEST_WORD 45
 #define NOT_ENOUGH_PARAMETERS -1
@@ -41,12 +48,10 @@ int main(int argc, char **argv)
 		return flag;
 	}
 
-	TRY(cudaSetDevice(0));
-
 	// uses only by strtol
 	char *p;
 	int i,j;
-	// sets the GPU
+	// sets the GPU or if -1 -> CPU
 	int set_device = strtol(argv[1], &p, 10);
 	int long_dic = strtol(argv[2], &p, 10);
 	int long_web = strtol(argv[3], &p, 10);
@@ -73,7 +78,12 @@ int main(int argc, char **argv)
 
 	if(flag!=0){return flag;}
 
-	finder(&set_device,&flag,count,dic_words,web_words,long_dic,long_web,LONGEST_WORD);
+	if(set_device==-1){
+		cpu_finder(count, dic_words, web_words, long_dic, long_web);
+	}else{
+		TRY(cudaSetDevice(set_device));
+		finder(&set_device, &flag, count, dic_words, web_words, long_dic, long_web, LONGEST_WORD);
+	}
 
 	for(i=0;i<long_dic;++i){
 
