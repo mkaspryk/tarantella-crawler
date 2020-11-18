@@ -18,7 +18,7 @@
 #define DICTIONARY_FILE_NOT_FOUND -2
 #define WEB_CONTENT_FILE_NOT_FOUND -3
 
-void readingFiles(int argc, char**argv, int *flag, char **dic_words, char **web_words){
+void readingFiles(int argc, char**argv, int *flag, char *dic_words, char *web_words, int longest_word){
 
 	std::string dictionary_file = argv[4];
 	std::cout<<"dictionary_file: "<<dictionary_file<<std::endl;
@@ -44,12 +44,12 @@ void readingFiles(int argc, char**argv, int *flag, char **dic_words, char **web_
 	int i=0;
 	std::string tmp_str;
 	while (std::getline(dic_file, tmp_str)) {
-		std::strcpy(dic_words[i],tmp_str.c_str());
+		std::strcpy(&(dic_words[longest_word*i]),tmp_str.c_str());
 		++i;
 	}
 	i=0;
 	while (std::getline(web_file, tmp_str)) {
-		std::strcpy(web_words[i], tmp_str.c_str());
+		std::strcpy(&(web_words[longest_word*i]), tmp_str.c_str());
 		++i;
 	}
 

@@ -11,9 +11,9 @@
 
 // export C interface
 extern "C"
-void cpu_finder(int *count, char **dic_words, char **web_words, int long_dic, int long_web);
+void cpu_finder(int *count, char *dic_words, char *web_words, int long_dic, int long_web, int longest_word);
 
 //! module word_finder main function
-void cpu_finder(int *count, char **dic_words, char **web_words, int long_dic, int long_web);
+void cpu_finder(int *count, char *dic_words, char *web_words, int long_dic, int long_web, int longest_word);
 
 #endif //! __CPU_WORD_FINDER_HPP__
