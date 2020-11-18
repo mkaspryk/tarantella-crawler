@@ -40,7 +40,7 @@ __global__ void finderKernel(int *count, char *dic_words, char *web_words,int *l
 	}
 }
 
-void finder(int *set_device, int *flag, int *count, char *dic_words, char *web_words, int long_dic, int long_web, int LONGEST_WORD){
+void finder(int *flag, int *count, char *dic_words, char *web_words, int long_dic, int long_web, int LONGEST_WORD){
 
 	char *dic_words_d, *web_words_d;
 	int *count_d, *long_dic_d, *long_web_d, *longest_word_d;

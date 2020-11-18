@@ -11,9 +11,16 @@
 
 // export C interface
 extern "C"
-void readingFiles(int argc, char**argv, int *flag, char *dic_words, char *web_words, int longest_word);
+void readingFiles(char**argv, int *flag, char *dic_words, char *web_words, int longest_word);
 
 //! reads formated files content
-void readingFiles(int argc, char**argv, int *flag, char *dic_words, char *web_words, int longest_word);
+void readingFiles(char**argv, int *flag, char *dic_words, char *web_words, int longest_word);
+
+// export C interface
+extern "C"
+void writingFile(char**argv, int *flag,int *count, int long_dic);
+
+//! writes count to the result file
+void writingFile(char**argv, int *flag,int *count, int long_dic);
 
 #endif //! __FILES_HANDLING_HPP__

@@ -27,7 +27,11 @@
 
 // export C interface (reads content from files)
 extern "C"
-void readingFiles(int argc, char**argv, int *flag, char *dic_words, char *web_words, int longest_word);
+void readingFiles(char**argv, int *flag, char *dic_words, char *web_words, int longest_word);
+
+// export C interface (writes to file dictionary count)
+extern "C"
+void writingFile(char**argv, int *flag,int *count, int long_dic);
 
 // export C interface (CPU word finder)
 extern "C"
@@ -68,7 +72,7 @@ int main(int argc, char **argv)
 		count[i] = 0;
 	}
 
-	readingFiles(argc, argv, &flag, dic_words, web_words, LONGEST_WORD);
+	readingFiles(argv, &flag, dic_words, web_words, LONGEST_WORD);
 
 	if(flag!=0){return flag;}
 
@@ -76,7 +80,7 @@ int main(int argc, char **argv)
 		cpu_finder(count, dic_words, web_words, long_dic, long_web, LONGEST_WORD);
 	}else{
 		TRY(cudaSetDevice(set_device));
-		finder(&set_device, &flag, count, dic_words, web_words, long_dic, long_web, LONGEST_WORD);
+		finder(&flag, count, dic_words, web_words, long_dic, long_web, LONGEST_WORD);
 	}
 
 	printf("dic words: \n");
@@ -93,6 +97,8 @@ int main(int argc, char **argv)
 	for(i=0;i<long_dic;++i){
 			printf("%d: %d\n",i,count[i]);
 	}
+
+	writingFile(argv, &flag, count, long_dic);
 
 	// frees the memory
 	free(dic_words);

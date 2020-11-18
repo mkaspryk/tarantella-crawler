@@ -17,8 +17,9 @@
 
 #define DICTIONARY_FILE_NOT_FOUND -2
 #define WEB_CONTENT_FILE_NOT_FOUND -3
+#define PAGE_COUNT_FILE_NOT_FOUND -4
 
-void readingFiles(int argc, char**argv, int *flag, char *dic_words, char *web_words, int longest_word){
+void readingFiles(char**argv, int *flag, char *dic_words, char *web_words, int longest_word){
 
 	std::string dictionary_file = argv[4];
 	std::cout<<"dictionary_file: "<<dictionary_file<<std::endl;
@@ -59,5 +60,24 @@ void readingFiles(int argc, char**argv, int *flag, char *dic_words, char *web_wo
 	return;
 }
 
+void writingFile(char**argv, int *flag,int *count, int long_dic){
 
+	std::string page_count_file = argv[6];
+	std::cout << "page_count: " << page_count_file << std::endl;
+	std::fstream count_file;
+
+	count_file.open(page_count_file,std::ios::out);
+	if(!count_file.is_open()){
+		*flag = PAGE_COUNT_FILE_NOT_FOUND;
+		return;
+	}
+
+	int i;
+	for(i=0;i<long_dic;++i){
+		count_file<<count[i];
+		count_file<<" ";
+	}
+
+	count_file.close();
+}
 

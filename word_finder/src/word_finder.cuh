@@ -13,6 +13,6 @@
 __global__ void finderKernel(int *count, char *dic_words, char *web_words,int *long_dic, int *long_web, int *longest_word);
 
 //! module word_finder main function
-void finder(int *set_device, int *flag, int *count, char *dic_words, char *web_words, int long_dic, int long_web, int LONGEST_WORD);
+void finder(int *flag, int *count, char *dic_words, char *web_words, int long_dic, int long_web, int LONGEST_WORD);
 
 #endif //! __WORD_FINDER_CUH__
