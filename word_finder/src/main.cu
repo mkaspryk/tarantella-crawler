@@ -83,20 +83,20 @@ int main(int argc, char **argv)
 		finder(&flag, count, dic_words, web_words, long_dic, long_web, LONGEST_WORD);
 	}
 
-	printf("dic words: \n");
-	for(i=0;i<long_dic;++i){
-		printf("%d: %s\n",i,&(dic_words[i*LONGEST_WORD]));
-	}
+	//printf("dic words: \n");
+	//for(i=0;i<long_dic;++i){
+	//	printf("%d: %s\n",i,&(dic_words[i*LONGEST_WORD]));
+	//}
 
-	printf("web words: \n");
-	for(i=0;i<long_web;++i){
-		printf("%d: %s\n",i,&(web_words[i*LONGEST_WORD]));
-	}
+	//printf("web words: \n");
+	//for(i=0;i<long_web;++i){
+	//	printf("%d: %s\n",i,&(web_words[i*LONGEST_WORD]));
+	//}
 
-	printf("count dic words: \n");
-	for(i=0;i<long_dic;++i){
-			printf("%d: %d\n",i,count[i]);
-	}
+	//printf("count dic words: \n");
+	//for(i=0;i<long_dic;++i){
+	//		printf("%d: %d\n",i,count[i]);
+	//}
 
 	writingFile(argv, &flag, count, long_dic);
 
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 	free(web_words);
 	free(count);
 
-	printf("flag = %d\n",flag);
+	//printf("flag = %d\n",flag);
 
 	return flag;
 }

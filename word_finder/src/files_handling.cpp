@@ -22,10 +22,10 @@
 void readingFiles(char**argv, int *flag, char *dic_words, char *web_words, int longest_word){
 
 	std::string dictionary_file = argv[4];
-	std::cout<<"dictionary_file: "<<dictionary_file<<std::endl;
+	//std::cout<<"dictionary_file: "<<dictionary_file<<std::endl;
 
 	std::string web_content_file = argv[5];
-	std::cout<<"web_content_file: "<<web_content_file<<std::endl;
+	//std::cout<<"web_content_file: "<<web_content_file<<std::endl;
 
 	std::fstream dic_file;
 	std::fstream web_file;
@@ -63,7 +63,7 @@ void readingFiles(char**argv, int *flag, char *dic_words, char *web_words, int l
 void writingFile(char**argv, int *flag,int *count, int long_dic){
 
 	std::string page_count_file = argv[6];
-	std::cout << "page_count: " << page_count_file << std::endl;
+	//std::cout << "page_count: " << page_count_file << std::endl;
 	std::fstream count_file;
 
 	count_file.open(page_count_file,std::ios::out);
@@ -75,7 +75,7 @@ void writingFile(char**argv, int *flag,int *count, int long_dic){
 	int i;
 	for(i=0;i<long_dic;++i){
 		count_file<<count[i];
-		count_file<<" ";
+		count_file<<", ";
 	}
 
 	count_file.close();
