@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/tarantella-crawler/web_crawler/ipaddress"
 	"github.com/tarantella-crawler/web_crawler/pagecontent"
+	"github.com/tarantella-crawler/web_crawler/scraping"
 )
 
 func check(e error) {
@@ -14,7 +16,16 @@ func check(e error) {
 }
 
 func main() {
-	page := pagecontent.GetPageContent("https://en.wikipedia.org/wiki/Bobby_Fischer")
+
+	ipaddress := ipaddress.GetIPAddress("www.jabole.pl")
+
+	fmt.Println("IP address: ", ipaddress)
+	pageContent := pagecontent.GetPageContent("https://en.wikipedia.org/wiki/Bobby_Fischer")
+
+	var urls string
+
+	scraping.Scraping(pageContent, urls)
+
 	f, err := os.Create("test.txt")
 	if err != nil {
 		fmt.Println(err)

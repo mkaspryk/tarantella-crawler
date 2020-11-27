@@ -8,6 +8,7 @@ import (
 
 // GetPageContent gets the page content and returns as string
 func GetPageContent(url string) string {
+
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
