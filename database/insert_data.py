@@ -27,22 +27,29 @@ except:
 
 # inserts data to table
 def insert_data():
-
-    try:
-        f = open(sys.argv[2], "r")
-        for x in f:
-            command += (f'"{x}"'+""" INTEGER, """)
-        command=command[:-2]
-        command +=""" ) """
-    except:
-         print("File "+ sys.argv[1] +" doesnt't exist")
-    
+    if len(sys.argv) < 3:
+        print("Not enough arguments passed")
+        return
+    table_name = sys.argv[1]
+    command = """"""
     try:
         cur = conn.cursor()
-        cur.execute(command)
+        try:
+            f = open(sys.argv[2], "r")
+            for x in f:
+                command = """"""
+                command ="""INSERT INTO """ + table_name
+                command +=""" VALUES( DEFAULT, """
+                command += x
+                command = command[:-2]
+                command += """)"""
+                cur.execute(command)
+        except:
+            print("File "+ sys.argv[2] +" doesnt't exist")
+            return
         cur.close()
         conn.commit()
-        print("Data inserted successfully to " + sys.argv[1])
+        print("Data inserted successfully to table " + table_name)
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:

@@ -24,15 +24,13 @@ except:
         
 # creates table in database - pages_data
 def create_table():
-    
     if len(sys.argv) < 3:
         print("Not enough arguments passed")
         return
-    
+    table_name = sys.argv[1]
     command = """ CREATE TABLE """
     command += sys.argv[1]
-    command += """ ( page_id INTEGER PRIMARY KEY, """
-    
+    command += """ ( id SERIAL PRIMARY KEY, """
     try:
         f = open(sys.argv[2], "r")
         for x in f:
@@ -40,14 +38,14 @@ def create_table():
         command=command[:-2]
         command +=""" ) """
     except:
-         print("File "+ sys.argv[1] +" doesnt't exist")
-         
+         print("File "+ sys.argv[2] +" doesnt't exist")
+         return
     try:
         cur = conn.cursor()
         cur.execute(command)
         cur.close()
         conn.commit()
-        print("Data table" + sys.argv[1]+" created successfully")
+        print("Table " + table_name + " created successfully")
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
