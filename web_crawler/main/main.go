@@ -17,21 +17,28 @@ func check(e error) {
 
 func main() {
 
+	if len(os.Args) < 2 {
+		os.Exit(-1)
+	}
+
+	lang := os.Args[1]
+
+	var flag int8
+	var urls []string
+
 	ipaddress := ipaddress.GetIPAddress("www.jabole.pl")
 
 	fmt.Println("IP address: ", ipaddress)
-	pageContent := pagecontent.GetPageContent("https://en.wikipedia.org/wiki/Bobby_Fischer")
+	pageContent := pagecontent.GetPageContent("https://stackoverflow.com/questions/4278293/how-do-i-return-from-func-main-in-go")
 
-	var urls string
-
-	scraping.Scraping(pageContent, urls)
+	scraping.Scraping(flag, pageContent, urls, lang)
 
 	f, err := os.Create("test.txt")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	l, err := f.WriteString(page)
+	l, err := f.WriteString(pageContent)
 	if err != nil {
 		fmt.Println(err)
 		f.Close()
