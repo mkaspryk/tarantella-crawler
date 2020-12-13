@@ -50,7 +50,6 @@ func checkLang(flag *int8, pageContent string, lang string) {
 			j := 0
 			for {
 				if pageContent[i] == 34 || j == 2 {
-					fmt.Println("here")
 					*flag = 0
 					return
 				}

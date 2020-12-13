@@ -13,10 +13,12 @@ func GetPageContent(url string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	content, err := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
+	defer resp.Body.Close()
+
+	bytesData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return string(content)
+
+	return string(bytesData)
 }
