@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 
 #============================================
 # Name          :   threads_number_finder.py
