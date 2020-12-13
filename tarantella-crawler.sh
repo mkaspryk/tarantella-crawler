@@ -21,8 +21,8 @@ TEST_SIZE=8
 RESULTS=$PATH/data/results/page_count.txt
 TABLE_NAME="data2"
 
-CUDA_DEVICE=$PATH/local_device_finder/cuda_device_finder/Release/./cuda_device_finder
-WORD_FINDER=$PATH/word_finder/Release/./word_finder
+CUDA_DEVICE=$PATH/bin/./cuda_device_finder
+WORD_FINDER=$PATH/bin/./word_finder
 
 CREATE=$PATH/database/./create_table.py
 INSERT=$PATH/database/./insert_data.py
