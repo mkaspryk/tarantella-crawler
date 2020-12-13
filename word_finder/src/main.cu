@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 
 	// uses only by strtol
 	char *p;
-	int i,j;
+	int i;
 	// sets the GPU or if -1 -> CPU
 	int set_device = strtol(argv[1], &p, 10);
 	int long_dic = strtol(argv[2], &p, 10);
