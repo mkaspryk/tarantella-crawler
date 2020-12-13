@@ -30,8 +30,6 @@ int set_device(){
 	}
 
 	set=0;
-	compute_capability=prop.major+(prop.minor*0.1);
-
 	printf("Number of devices: %d\n", count);
 	for (i = 0; i < count; ++i) {
 		printf("----------------Device specification------------------\n");
