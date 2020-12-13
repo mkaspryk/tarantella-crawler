@@ -1,7 +1,7 @@
 //=======================================================================
 // Name            : main.cu
 // Author          : Marcin Grzegorz Kaspryk
-// Version         : 1.0.0
+// Version         : 1.0.1
 // Copyright       : ASL
 // Description     : CUDA module - main function
 //=======================================================================
@@ -79,8 +79,7 @@ int main(int argc, char **argv)
 	if(set_device==-1){
 		cpu_finder(count, dic_words, web_words, long_dic, long_web, LONGEST_WORD);
 	}else{
-		TRY(cudaSetDevice(set_device));
-		finder(&flag, count, dic_words, web_words, long_dic, long_web, LONGEST_WORD);
+		finder(&flag, count, dic_words, web_words, long_dic, long_web, LONGEST_WORD, set_device);
 	}
 
 	//printf("dic words: \n");
@@ -104,8 +103,6 @@ int main(int argc, char **argv)
 	free(dic_words);
 	free(web_words);
 	free(count);
-
-	//printf("flag = %d\n",flag);
 
 	return flag;
 }

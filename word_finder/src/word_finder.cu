@@ -1,7 +1,7 @@
 //=======================================================================
 // Name            : word_finder.cu
 // Author          : Marcin Grzegorz Kaspryk
-// Version         : 1.0.0
+// Version         : 1.0.1
 // Copyright       : ASL
 // Description     : CUDA module - Word Finder
 //=======================================================================
@@ -24,7 +24,6 @@
 __global__ void finderKernel(int *count, char *dic_words, char *web_words,int *long_dic, int *long_web, int *longest_word){
 
 	int j,x,tid = blockIdx.x*blockDim.x+threadIdx.x;
-
 	while(tid< *long_dic){
 		for(j=0;j<*long_web;++j){
 			x=0;
@@ -40,7 +39,14 @@ __global__ void finderKernel(int *count, char *dic_words, char *web_words,int *l
 	}
 }
 
-void finder(int *flag, int *count, char *dic_words, char *web_words, int long_dic, int long_web, int LONGEST_WORD){
+void finder(int *flag, int *count, char *dic_words, char *web_words, int long_dic, int long_web, int LONGEST_WORD, int device){
+
+	// sets the device and gets the properties
+	cudaDeviceProp prop;
+	TRY(cudaGetDeviceProperties(&prop, device));
+	cudaSetDevice(device);
+	int blocks_per_threads = prop.maxThreadsPerBlock;
+	int threads = prop.maxThreadsDim[0];
 
 	char *dic_words_d, *web_words_d;
 	int *count_d, *long_dic_d, *long_web_d, *longest_word_d;
@@ -60,7 +66,7 @@ void finder(int *flag, int *count, char *dic_words, char *web_words, int long_di
 	TRY(cudaMemcpy(long_web_d,&long_web,sizeof(int),cudaMemcpyHostToDevice));
 	TRY(cudaMemcpy(longest_word_d,&LONGEST_WORD,sizeof(int),cudaMemcpyHostToDevice));
 
-	finderKernel<<< (long_dic+1023)/1024,1024 >>>(count_d, dic_words_d, web_words_d, long_dic_d, long_web_d, longest_word_d);
+	finderKernel<<< (long_dic+(blocks_per_threads-1))/blocks_per_threads,threads >>>(count_d, dic_words_d, web_words_d, long_dic_d, long_web_d, longest_word_d);
 
 	TRY(cudaDeviceSynchronize());
 
@@ -75,6 +81,4 @@ void finder(int *flag, int *count, char *dic_words, char *web_words, int long_di
     cudaFree(longest_word_d);
 
 	cudaDeviceReset();
-
-	return;
 }
