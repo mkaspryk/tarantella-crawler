@@ -1,17 +1,49 @@
 package scraping
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"strconv"
+
+	"github.com/tarantella-crawler/web_crawler/pagecontent"
+)
+
+type WebPages struct {
+	urls         []string
+	clearContent []string
+	pageNumber   int
+	searchLength int
+	pageLang     string
+}
+
+// Crawler program main func
+func Crawler(pageLang string, searchLength string, startPage string) {
+
+	var wb WebPages
+	wb.pageLang = pageLang
+	sl, err := strconv.Atoi(searchLength)
+	if err != nil {
+		log.Fatal(err)
+	}
+	wb.searchLength = sl
+	wb.urls = append(wb.urls, startPage)
+	for i := 0; i < wb.searchLength; i++ {
+		pageContent, err := pagecontent.GetPageContent(wb.urls[i])
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(pageContent)
+		err = scraping(pageContent)
+	}
+}
 
 // Scraping the data from page
-func Scraping(flag int8, pageContent string, urls []string, lang string) []string {
+func scraping(pageContent string) (err error) {
 
-	checkLang(&flag, pageContent, lang)
+	//checkLang(&flag, pageContent, lang)
 
-	var cleanContent []string
-
-	fmt.Println(flag)
-
-	return cleanContent
+	fmt.Println("here")
+	return err
 }
 
 func checkLang(flag *int8, pageContent string, lang string) {
