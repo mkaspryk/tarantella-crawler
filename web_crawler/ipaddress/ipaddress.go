@@ -5,13 +5,13 @@ import (
 )
 
 // GetIPAddress gets the ip address of visited website
-func GetIPAddress(address string) net.IP {
+func GetIPAddress(address string) (IP net.IP, err error) {
 
 	ips, _ := net.LookupIP(address)
 	for _, ip := range ips {
 		if ipv4 := ip.To4(); ipv4 != nil {
-			return ipv4
+			return ipv4, err
 		}
 	}
-	return nil
+	return IP, err
 }

@@ -3,12 +3,13 @@ package scraping
 import (
 	"fmt"
 	"log"
-	"strconv"
+	"net/http"
 
-	"github.com/tarantella-crawler/web_crawler/pagecontent"
+	"github.com/PuerkitoBio/goquery"
 )
 
-type WebPages struct {
+type webPages struct {
+	crawled      map[string]bool
 	urls         []string
 	clearContent []string
 	pageNumber   int
@@ -16,83 +17,75 @@ type WebPages struct {
 	pageLang     string
 }
 
-// Crawler program main func
-func Crawler(pageLang string, searchLength string, startPage string) {
+// webPages constructor
+func new(searchLength int, pageLang string) *webPages {
 
-	var wb WebPages
-	wb.pageLang = pageLang
-	sl, err := strconv.Atoi(searchLength)
-	if err != nil {
-		log.Fatal(err)
+	return &webPages{
+		crawled:      make(map[string]bool),
+		searchLength: searchLength,
+		pageNumber:   0,
+		pageLang:     pageLang,
 	}
-	wb.searchLength = sl
+}
+
+// Crawl performs url and text content search
+func Crawl(pageLang string, searchLength int, startPage string) {
+
+	wb := new(searchLength, pageLang)
 	wb.urls = append(wb.urls, startPage)
+
 	for i := 0; i < wb.searchLength; i++ {
-		pageContent, err := pagecontent.GetPageContent(wb.urls[i])
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(pageContent)
-		err = scraping(pageContent)
+		doc := getPageContent(wb.urls[i])
+		checkLang(doc, wb.pageLang)
+		getLinksFromPage(doc, *wb)
 	}
 }
 
 // Scraping the data from page
 func scraping(pageContent string) (err error) {
 
-	//checkLang(&flag, pageContent, lang)
-
 	fmt.Println("here")
 	return err
 }
 
-func checkLang(flag *int8, pageContent string, lang string) {
+// GetPageContent gets the page content (urls, text)
+func getPageContent(url string) goquery.Document {
 
-	i := 0
-	//search for doctype
-	for {
-		if pageContent[i] == 60 && pageContent[i+2] == 68 {
-			break
-		}
-		i++
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
 	}
-	//search for html
-	for {
-		if pageContent[i] == 60 && pageContent[i+1] == 104 && pageContent[i+2] == 116 {
-			break
-		}
-		i++
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		log.Fatalf("status code error: %d %s", resp.StatusCode, resp.Status)
 	}
-	//search for lang
-	for {
-		// not defined lang
-		if pageContent[i] == 62 {
-			*flag = -3
-			return
-		}
-		if pageContent[i] == 108 && pageContent[i+1] == 97 && pageContent[i+2] == 110 && pageContent[i+3] == 103 && pageContent[i+4] == 61 {
-			i = i + 5
-			for {
-				if pageContent[i] == 34 {
-					i++
-					break
-				}
-				i++
-			}
-			j := 0
-			for {
-				if pageContent[i] == 34 || j == 2 {
-					*flag = 0
-					return
-				}
-				if lang[j] != pageContent[i] {
-					*flag = -2
-					return
-				}
-				j++
-				i++
-			}
-		}
-		i++
+
+	// Load the HTML document
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
+	if err != nil {
+		log.Fatal(err)
 	}
+	return *doc
+}
+
+func checkLang(doc goquery.Document, pageLang string) bool {
+	return false
+}
+
+func getLinksFromPage(doc goquery.Document, wb webPages) {
+
+	doc.Find("body a").EachWithBreak(func(index int, item *goquery.Selection) bool {
+		if index == 0 {
+			return true
+		}
+		wb.pageNumber = index
+		if wb.pageNumber <= wb.searchLength {
+			linkTag := item
+			link, _ := linkTag.Attr("href")
+			wb.urls = append(wb.urls, link)
+			return true
+		}
+		return false
+	})
 }
