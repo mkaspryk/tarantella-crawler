@@ -8,38 +8,77 @@
 # Description   :   Main program
 #============================================
 
-echo "=================================="
-echo "Hello there, here your tarantella"
-echo "=================================="
+echo "==============================================================="
+echo "                      tarantella-crawler                       "
+echo "==============================================================="
 
-PATH="/home/mgk/repo/go/src/github.com/tarantella-crawler"
+path=$(pwd)
 
-DICTIONARY=$PATH/data/dictionaries/en.txt
-DIC_SIZE=1383
-FORMATTED_WEB_CONTENT=$PATH/data/formatted_web_content/test.txt
-TEST_SIZE=8
-RESULTS=$PATH/data/results/page_count.txt
-TABLE_NAME="data2"
+dictionary=$path/data/dictionaries/en.txt
+formatted_web_content=$path/data/formatted_web_content
+formatted_web_content_pages=$path/data/formatted_web_content/pages/*
+results=$path/data/results
 
-CUDA_DEVICE=$PATH/bin/./cuda_device_finder
-WORD_FINDER=$PATH/bin/./word_finder
+lang="en"
+searchLength=10
+startPage="https://en.wikipedia.org/wiki/Ski_jumping"
 
-CREATE=$PATH/database/./create_table.py
-INSERT=$PATH/database/./insert_data.py
+echo "Setted lang: $lang"
+echo "Setted search length: $searchLength"
+echo "Setted start page: $startPage"
+
+CUDA_DEVICE=$path/bin/./cuda_device_finder
+WORD_FINDER=$path/bin/./word_finder
+WEB_CRAWLER=$path/bin/./web_crawler
+CREATE=$path/database/./create_table.py
+INSERT=$path/database/./insert_data.py
+
+echo "Running web_crawler"
+echo "..."
+
+$WEB_CRAWLER $lang $searchLength $startPage $formatted_web_content 
+
+FLAG=$?
+
+if [[ $FLAG -ne 0 ]]
+then
+echo "Error - check lang !"
+exit 
+fi
+
+echo "done"
 
 echo ""
 $CUDA_DEVICE
-SET_CUDA_DEVICE=$?
+set_cuda_device=$?
 echo ""
-
-$CREATE $TABLE_NAME $DICTIONARY
 
 echo "Running word_finder"
 echo "..."
 
-$WORD_FINDER $SET_CUDA_DEVICE $DIC_SIZE $TEST_SIZE $DICTIONARY $FORMATTED_WEB_CONTENT $RESULTS
-FLAG=$?
-echo "Flag: $FLAG"
+dic_size=1383
+table_name="data"
 
+x=0
+while IFS= read -r size
+do
+    for f in $formatted_web_content_pages
+    do
+        echo $formatted_web_content/pages/$x.txt
+        $WORD_FINDER $set_cuda_device $dic_size $size $dictionary $formatted_web_content/pages/$x.txt $results/$x.txt
+        FLAG=$?
+        if [[ $FLAG -eq 0 ]] 
+        then
+        echo "done"
+        else
+        echo "Error! Error flag: $FLAG"
+        fi
+        rm -r $formatted_web_content/pages/$x.txt
+        x=$((x+1))
+        break
+    done
+done < $formatted_web_content/count.txt
+
+#$CREATE $table_name $dictionary
 echo ""
-$INSERT $TABLE_NAME $RESULTS
+#$INSERT $TABLE_NAME $results

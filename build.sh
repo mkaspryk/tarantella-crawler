@@ -8,7 +8,7 @@
 # Description   :   Build script
 #============================================
 
-path="/home/mgk/repo/go/src/github.com/tarantella-crawler"
+path=$(pwd)
 
 word_finder=$path/word_finder/
 
