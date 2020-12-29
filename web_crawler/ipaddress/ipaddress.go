@@ -1,3 +1,11 @@
+//============================================
+// Name          :   ipaddress.go
+// Author        :   Marcin Grzegorz Kaspryk
+// Version       :   1.0.1
+// Copyright     :   ASL
+// Description   :   ipaddress
+//============================================
+
 package ipaddress
 
 import (

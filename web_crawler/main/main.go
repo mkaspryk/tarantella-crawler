@@ -1,3 +1,11 @@
+//============================================
+// Name          :   main.go
+// Author        :   Marcin Grzegorz Kaspryk
+// Version       :   1.0.1
+// Copyright     :   ASL
+// Description   :   main - web_crawler
+//============================================
+
 package main
 
 import (
@@ -14,6 +22,7 @@ func main() {
 		os.Exit(-1)
 	}
 
+	// reading input parameters
 	pageLang := os.Args[1]
 	searchLength := os.Args[2]
 	startPage := os.Args[3]
@@ -24,5 +33,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	scraping.Crawl(pageLang, sl, startPage, path)
+	flag := scraping.Crawl(pageLang, sl, startPage, path)
+
+	os.Exit(flag)
 }
