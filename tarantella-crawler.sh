@@ -79,6 +79,14 @@ do
     done
 done < $formatted_web_content/count.txt
 
+# creates table in database
+echo "Creating table"
+echo "..."
 #$CREATE $table_name $dictionary
-echo ""
+
+echo "Inserting data to table"
+echo "..."
+#inserts data to table in database
 #$INSERT $TABLE_NAME $results
+
+rm -r $results/*
