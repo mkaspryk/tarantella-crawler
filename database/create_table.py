@@ -3,7 +3,7 @@
 #============================================
 # Name          :   create_table.py
 # Author        :   Marcin Grzegorz Kaspryk
-# Version       :   1.0.0
+# Version       :   1.1.1
 # Copyright     :   ASL
 # Description   :   Creats the table
 #============================================
@@ -31,6 +31,7 @@ def create_table():
     command = """ CREATE TABLE """
     command += sys.argv[1]
     command += """ ( id SERIAL PRIMARY KEY, """
+    command += """ domain_name text, page_name text, """
     try:
         f = open(sys.argv[2], "r")
         for x in f:
